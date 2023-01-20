@@ -40,7 +40,7 @@ def train(model, train_dataset, val_dataset, model_dir):
         outputs, labels = np.array(outputs), np.array(labels)
         train_acc = accuracy(labels, outputs)
         val_acc = evaluate(model, val_dataset)
-        print('Train : {train_acc:.4f} | Val : {val_acc:.4f}')
+        print(f'Train : {train_acc:.4f} | Val : {val_acc:.4f}')
         scheduler.step(val_acc)
         if val_acc > best_score:
             best_score = val_acc
