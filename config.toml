@@ -6,7 +6,7 @@ VAL_DATA_DIR = 'data/val'
 EVAL_DATA_DIR = 'data/test'
 LABEL_FILE = 'data/annotations.json'
 CHECKPOINT = 'weights.pth'
-MODEL_DIR = 'ResNet_'
+MODEL_DIR = 'ResNet-'
 OUTPUT_FILE = 'submission.csv'
 
 [constants]
@@ -14,8 +14,9 @@ SAMPLE_RATE = 2000
 RESAMPLE_RATE = 1000
 LOW_PASS=750
 HIGH_PASS=10
-MAX_SAMPLE_NUM=50000
-BATCH_SIZE = 64
+MAX_SAMPLE_NUM=49152
+BATCH_SIZE = 14
+CLASS_NUM = 2
 lr = 1e-3
 epochs = 30
 

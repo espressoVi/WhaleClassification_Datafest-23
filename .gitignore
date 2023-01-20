@@ -1,6 +1,6 @@
 data/*
 logs/
-ResNet_*/
+ResNet-*/
 run.sh
 
 __pycache__/
