@@ -1,47 +1,30 @@
 name = "DATAFEST"
 
 [files]
-DATA_DIR = 'data/train'
+TRAIN_DATA_DIR = 'data/train'
+VAL_DATA_DIR = 'data/val'
+EVAL_DATA_DIR = 'data/test'
 LABEL_FILE = 'data/annotations.json'
 CHECKPOINT = 'weights.pth'
 MODEL_DIR = 'ResNet_'
+OUTPUT_FILE = 'submission.csv'
 
 [constants]
-CLASS_NUM = 20
-FOLDS = 10
+SAMPLE_RATE = 2000
+RESAMPLE_RATE = 1000
+LOW_PASS=750
+HIGH_PASS=10
+MAX_SAMPLE_NUM=30000
 BATCH_SIZE = 64
-UPDATE_GAMMA = 500
-lr = 1e-5
-epochs = 8
+lr = 1e-3
+epochs = 30
 
 [dataset]
-	[dataset.train_noisy]
-	noisy = true
-	noise_percentage = 0.5
-	filtered = false
-
-	[dataset.train_dost]
-	noisy = true
-	noise_percentage = 0.25
-	filtered = false
-
-	[dataset.train_filtered]
-	noisy = true
-	noise_percentage = 0.3
-	filtered = true
+	[dataset.train]
+	mode='train'
 
 	[dataset.val]
-	noisy = false
-	noise_percentage = 0
-	filtered = false
+	mode='val'
 
-	[dataset.test]
-	noisy = false
-	noise_percentage = 0
-	filtered = false
-
-	[dataset.experiment]
-	folds = [9]
-	noisy = true 
-	noise_percentage = 0.3
-	filtered = false
+	[dataset.eval]
+	mode='eval'
