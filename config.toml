@@ -1,0 +1,47 @@
+name = "DATAFEST"
+
+[files]
+DATA_DIR = 'data/train'
+LABEL_FILE = 'data/annotations.json'
+CHECKPOINT = 'weights.pth'
+MODEL_DIR = 'ResNet_'
+
+[constants]
+CLASS_NUM = 20
+FOLDS = 10
+BATCH_SIZE = 64
+UPDATE_GAMMA = 500
+lr = 1e-5
+epochs = 8
+
+[dataset]
+	[dataset.train_noisy]
+	noisy = true
+	noise_percentage = 0.5
+	filtered = false
+
+	[dataset.train_dost]
+	noisy = true
+	noise_percentage = 0.25
+	filtered = false
+
+	[dataset.train_filtered]
+	noisy = true
+	noise_percentage = 0.3
+	filtered = true
+
+	[dataset.val]
+	noisy = false
+	noise_percentage = 0
+	filtered = false
+
+	[dataset.test]
+	noisy = false
+	noise_percentage = 0
+	filtered = false
+
+	[dataset.experiment]
+	folds = [9]
+	noisy = true 
+	noise_percentage = 0.3
+	filtered = false
