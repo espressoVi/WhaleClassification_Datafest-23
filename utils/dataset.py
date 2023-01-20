@@ -39,19 +39,24 @@ class Dataset:
         waveform = F.highpass_biquad(waveform, sample_rate = self.sample_rate, cutoff_freq = constants['HIGH_PASS'])
         waveform = F.lowpass_biquad(waveform, sample_rate = self.sample_rate, cutoff_freq = constants['LOW_PASS'])
         waveform = self.resample(waveform)
+        if waveform.shape[1] > self.sample_num:
+            waveform = waveform[:,:self.sample_num]
+        else:
+            repeat, part = divmod(self.sample_num, waveform.shape[1])
+            shortfall = self.sample_num - waveform.shape[1]
+            waveform = torch.cat([waveform]*repeat+[waveform[:,:part]], dim=1)
+            #waveform = (waveform - waveform.min())/(waveform.max()-waveform.min())
         return waveform
-
     def _load(self):
         self.recordings = []
         self.labels = []
         self.masks = []
         filenames = self._get_filenames()
         for filename in tqdm(filenames, desc = "Loading files"):
-            recording, mask = self._get_single_recording(filename)
-            label = int(filename.split("/")[-1][0])
+            recording = self._get_single_recording(filename)
+            label = self._get_label(filename)
             self.recordings.append(recording)
             self.labels.append(label)
-            self.masks.append(masks)
         self.labels = torch.tensor(self.labels)
         self.recordings = torch.stack(self.recordings, dim=0)
     def __iter__(self): 
@@ -70,6 +75,9 @@ class Dataset:
         return len(self.recordings)
     def _get_filenames(self):
         return [os.path.join(self.directory, f) for f in os.listdir(self.directory)]
+    @staticmethod
+    def _get_label(filename):
+        return int(filename.split("/")[-1][0])
 
 def main():
     dset = Dataset(None, **dset_type) 
