@@ -17,7 +17,7 @@ HIGH_PASS=10
 MAX_SAMPLE_NUM=49152
 BATCH_SIZE = 14
 CLASS_NUM = 2
-lr = 1e-3
+lr = 1e-2
 epochs = 50
 
 [dataset]

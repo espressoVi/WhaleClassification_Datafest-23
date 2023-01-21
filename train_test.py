@@ -15,8 +15,8 @@ learning_rate = constants['lr']
 
 def train(model, train_dataset, val_dataset, test_dataset, model_dir):
     optimizer_parameters = model.parameters()
-    optimizer = AdamW(optimizer_parameters,lr=constants['lr'], eps=1e-8, weight_decay = 1e-4)
-    scheduler = ReduceLROnPlateau(optimizer, mode = 'max', factor = 0.3, patience = 3, threshold = 1e-2)
+    optimizer = AdamW(optimizer_parameters,lr=constants['lr'])
+    scheduler = ReduceLROnPlateau(optimizer, mode = 'max', factor = 0.5, patience = 3, threshold = 1)
     best_score = 0
     epochs = constants['epochs']
     for ep in range(1,epochs+1):
@@ -59,10 +59,15 @@ def evaluate(model, dataset, write=False):
         labels.extend(lab.detach().cpu().numpy())
     outputs, labels = np.array(outputs), np.array(labels)
     if write:
-        with open(files['OUTPUT_FILE'], 'w') as f:
-            f.writelines([f"{lab},{out}" for lab,out in zip(labels, outputs)])
-        return None
+        Write(labels, outputs)
+        return
     return accuracy(labels, outputs)
+
+def Write(ids, outputs):
+    res = ["id,label"] + [f"{lab},{out}" for lab,out in zip(ids, outputs)]
+    with open(files['OUTPUT_FILE'], 'w') as f:
+        f.writelines('\n'.join(res))
+    return
 
 def accuracy(targets, predicts):
     return np.mean(np.where(targets == predicts, 1,0))*100
