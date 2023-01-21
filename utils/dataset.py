@@ -77,4 +77,4 @@ class Dataset:
         return [os.path.join(self.directory, f) for f in os.listdir(self.directory)]
     @staticmethod
     def _get_label(filename):
-        return int(filename.split("/")[-1][0])
+        return int(filename.split("/")[-1].split('_')[0])

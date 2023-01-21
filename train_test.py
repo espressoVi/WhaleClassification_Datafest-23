@@ -13,7 +13,7 @@ constants = config_dict['constants']
         
 learning_rate = constants['lr']
 
-def train(model, train_dataset, val_dataset, model_dir):
+def train(model, train_dataset, val_dataset, test_dataset, model_dir):
     optimizer_parameters = model.parameters()
     optimizer = AdamW(optimizer_parameters,lr=constants['lr'], eps=1e-8, weight_decay = 1e-4)
     scheduler = ReduceLROnPlateau(optimizer, mode = 'max', factor = 0.3, patience = 3, threshold = 1e-2)
@@ -45,6 +45,7 @@ def train(model, train_dataset, val_dataset, model_dir):
         if val_acc > best_score:
             best_score = val_acc
             torch.save(model.state_dict(), os.path.join(model_dir,files['CHECKPOINT']))
+            evaluate(model, test_dataset, write = True)
             print('Model Saved')
         print(f'Time taken: {(perf_counter()-start):.2f}s')
 
@@ -57,6 +58,10 @@ def evaluate(model, dataset, write=False):
         outputs.extend(out.detach().cpu().numpy())
         labels.extend(lab.detach().cpu().numpy())
     outputs, labels = np.array(outputs), np.array(labels)
+    if write:
+        with open(files['OUTPUT_FILE'], 'w') as f:
+            f.writelines([f"{lab},{out}" for lab,out in zip(labels, outputs)])
+        return None
     return accuracy(labels, outputs)
 
 def accuracy(targets, predicts):

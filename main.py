@@ -19,7 +19,8 @@ def manager(directory,):
     model.to(device)
     val_dataset   = Dataset(device, **datasets['val'])
     train_dataset = Dataset(device, **datasets['train'])
-    train(model, train_dataset, val_dataset, directory)
+    test_dataset = Dataset(device, **datasets['eval'])
+    train(model, train_dataset, val_dataset, test_dataset, directory)
 
 def main():
     output_directory = files['MODEL_DIR']
