@@ -40,14 +40,13 @@ def train(model, train_dataset, val_dataset, test_dataset, model_dir):
         outputs, labels = np.array(outputs), np.array(labels)
         train_acc = accuracy(labels, outputs)
         val_acc = evaluate(model, val_dataset)
-        print(f'Train : {train_acc:.4f} | Val : {val_acc:.4f}')
+        print(f'Train : {train_acc:.4f} | Val : {val_acc:.4f} | Time taken: {(perf_counter()-start):.2f}s')
         scheduler.step(val_acc)
         if val_acc > best_score:
             best_score = val_acc
             torch.save(model.state_dict(), os.path.join(model_dir,files['CHECKPOINT']))
             evaluate(model, test_dataset, write = True)
             print('Model Saved')
-        print(f'Time taken: {(perf_counter()-start):.2f}s')
 
 def evaluate(model, dataset, write=False):
     model.eval()
