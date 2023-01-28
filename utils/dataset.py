@@ -45,7 +45,7 @@ class Dataset:
             repeat, part = divmod(self.sample_num, waveform.shape[1])
             shortfall = self.sample_num - waveform.shape[1]
             waveform = torch.cat([waveform]*repeat+[waveform[:,:part]], dim=1)
-        waveform = (waveform - waveform.min())/(waveform.max()-waveform.min())
+        waveform = waveform/torch.std(waveform)
         return waveform
     def _load(self):
         self.recordings = []
