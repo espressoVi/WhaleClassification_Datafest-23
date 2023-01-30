@@ -1,6 +1,6 @@
 import numpy as np
 
-FILES = [f'submissions/submission-{i}.csv' for i in range(1,4)]
+FILES = [f'submissions/submission-{i}.csv' for i in ['best','1']]
 
 def read():
     res = []
@@ -18,13 +18,16 @@ def compare(answers):
     keys = answers[0].keys()
     count = 1
     for key in keys:
-        if answers[0][key] == answers[1][key] == answers[2][key]:
+        if answers[0][key] == answers[1][key]:
             final.append(f'{key},{answers[0][key]}')
         else:
-            majority = int((answers[0][key] + answers[1][key] + answers[2][key])/3 > 0.5)
-            final.append(f'{key},{majority}')
-    with open('submission-ensemble.csv', 'w') as f:
-        f.writelines('\n'.join(final))
+            print(key, answers[0][key], answers[1][key])
+            count+=1
+            #majority = int((answers[0][key] + answers[1][key] + answers[2][key])/3 > 0.5)
+            #final.append(f'{key},{majority}')
+    print(count)
+    #with open('submission-ensemble.csv', 'w') as f:
+    #    f.writelines('\n'.join(final))
 
 def main():
     answers = read()

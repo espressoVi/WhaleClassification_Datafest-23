@@ -13,12 +13,13 @@ constants = config_dict['constants']
 class classifier(nn.Module):
     def __init__(self):
         super().__init__()
-        self.num_blocks = 19
+        self.num_blocks = 11
         _downsample_every = 2
         _kernel_size = 19
-        _stride_factor = 2
+        _stride_factor = 4
         _in_features = constants['MAX_SAMPLE_NUM'] 
         _out_features = _in_features//(4*_stride_factor**(self.num_blocks//_downsample_every)) - _kernel_size + 1
+        print(_out_features)
         _in_channels = 1
         _out_channels = 2**((self.num_blocks)//4)
         _embedding_dim = 2**int(log2(_out_features*_out_channels))
