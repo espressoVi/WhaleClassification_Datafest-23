@@ -21,6 +21,7 @@ def manager(directory,):
     train_dataset = Dataset(device, **datasets['train'])
     test_dataset = Dataset(device, **datasets['eval'])
     train(model, train_dataset, val_dataset, test_dataset, directory)
+    #train(model, val_dataset, val_dataset, test_dataset, directory)
 
 def main():
     output_directory = files['MODEL_DIR']
