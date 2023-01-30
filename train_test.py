@@ -15,7 +15,7 @@ learning_rate = constants['lr']
 
 def train(model, train_dataset, val_dataset, test_dataset, model_dir):
     optimizer_parameters = model.parameters()
-    optimizer = AdamW(optimizer_parameters,lr=constants['lr'])
+    optimizer = AdamW(optimizer_parameters,lr=constants['lr'], weight_decay = 0.1)
     scheduler = ReduceLROnPlateau(optimizer, mode = 'max', factor = 0.4, patience = 3, threshold = 1)
     best_score = 0
     epochs = constants['epochs']

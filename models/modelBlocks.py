@@ -19,20 +19,21 @@ class bnRelu(nn.Module):
         return layer
 
 class resBlock(nn.Module):
-    def __init__(self, index, downsample_rate = 3):
+    def __init__(self, index, downsample_rate, stride_factor):
         super().__init__()
         self.index = index
-        self.dropout = 0.3
-        self.in_channels = 2**((index-1)//4)
-        self.out_channels = 2**((index)//4)
-        self.stride = 1 if (index % downsample_rate != 0) else 2
-        self.kernel_size = 17
-        self.bn1 = bnRelu(self.in_channels)
-        self.bn2 = bnRelu(self.out_channels,self.dropout)
-        self.conv1 = nn.Conv1d(self.in_channels, self.out_channels, self.kernel_size, stride = self.stride, padding = self.kernel_size//2, )
-        self.conv2 = nn.Conv1d(self.out_channels, self.out_channels, self.kernel_size, stride = 1, padding = self.kernel_size//2,)
-        self.conv1x1 = nn.Conv1d(self.in_channels, self.out_channels, 1, stride = 1, padding = 0, )
-        self.maxPool = nn.MaxPool1d(self.kernel_size, stride= self.stride, padding = self.kernel_size//2)
+        _dropout = 0.3
+        _in_channels = 2**((index-1)//4)
+        _out_channels = 2**((index)//4)
+        _stride = 1 if (index % downsample_rate != 0) else stride_factor
+        _kernel_size = 51
+        _padding = _kernel_size//2
+        self.bn1 = bnRelu(_in_channels)
+        self.bn2 = bnRelu(_out_channels, _dropout)
+        self.conv1 = nn.Conv1d(_in_channels, _out_channels, _kernel_size, stride = _stride, padding = _padding, )
+        self.conv2 = nn.Conv1d(_out_channels, _out_channels, _kernel_size, stride = 1, padding = _padding,)
+        self.conv1x1 = nn.Conv1d(_in_channels, _out_channels, 1, stride = 1, padding = 0, )
+        self.maxPool = nn.MaxPool1d(_kernel_size, stride = _stride, padding = _padding,)
     def forward(self, layer):
         output = layer
         shortcut = self.conv1x1(layer)
@@ -48,14 +49,14 @@ class resTop(nn.Module):
     def __init__(self):
         super().__init__()
         self.index = 0
-        self.channels_start = 1
-        self.kernel_size = 11
-        self.conv_start = nn.Conv1d(self.channels_start, self.channels_start, self.kernel_size, stride = 1, padding = self.kernel_size//2)#'same')
-        self.bn1 = bnRelu(self.channels_start)
-        self.conv1 = nn.Conv1d(self.channels_start, self.channels_start, self.kernel_size, stride = 2, padding = self.kernel_size//2,)
-        self.bn2 = bnRelu(self.channels_start, 0.2)
-        self.conv2 = nn.Conv1d(self.channels_start, self.channels_start, self.kernel_size, stride = 2, padding = self.kernel_size//2,)
-        self.maxPool = nn.MaxPool1d(self.kernel_size, stride=4, padding = self.kernel_size//2)
+        _in_channels = 1
+        _kernel_size = 31
+        self.conv_start = nn.Conv1d(_in_channels, _in_channels, _kernel_size, stride = 1, padding = _kernel_size//2)
+        self.bn1 = bnRelu(_in_channels)
+        self.conv1 = nn.Conv1d(_in_channels, _in_channels, _kernel_size, stride = 2, padding = _kernel_size//2,)
+        self.bn2 = bnRelu(_in_channels, 0.2)
+        self.conv2 = nn.Conv1d(_in_channels, _in_channels, _kernel_size, stride = 2, padding = _kernel_size//2,)
+        self.maxPool = nn.MaxPool1d(_kernel_size, stride=4, padding = _kernel_size//2)
     def forward(self, layer):
         layer = self.conv_start(layer)
         layer = self.bn1(layer)
