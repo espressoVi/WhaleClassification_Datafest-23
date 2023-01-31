@@ -26,7 +26,7 @@ class resBlock(nn.Module):
         _in_channels = 2**((index-1)//4)
         _out_channels = 2**((index)//4)
         _stride = 1 if (index % downsample_rate != 0) else stride_factor
-        _kernel_size = 71
+        _kernel_size = 101
         _padding = _kernel_size//2
         self.bn1 = bnRelu(_in_channels)
         self.bn2 = bnRelu(_out_channels, _dropout)
