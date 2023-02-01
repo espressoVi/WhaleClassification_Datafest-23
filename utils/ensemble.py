@@ -1,6 +1,8 @@
 import numpy as np
+import shutil
+import os
 
-FILES = [f'submissions/submission-{i}.csv' for i in ['best','1']]
+FILES = [os.path.join('submissions',i) for i in os.listdir('submissions')]
 
 def read():
     res = []
@@ -18,16 +20,18 @@ def compare(answers):
     keys = answers[0].keys()
     count = 1
     for key in keys:
-        if answers[0][key] == answers[1][key]:
+        if all([answers[0][key] == answers[i][key] for i in range(1,len(answers))]):
             final.append(f'{key},{answers[0][key]}')
         else:
-            print(key, answers[0][key], answers[1][key])
+            shutil.copy(f"data/test/{key}_{key}.wav",f"data/wtf/{key}.wav")
+            print(key, ','.join([str(answers[i][key]) for i in range(len(answers))]))
+            majority = int(sum([answers[i][key] for i in range(len(answers))]) > 0.5)
             count+=1
             #majority = int((answers[0][key] + answers[1][key] + answers[2][key])/3 > 0.5)
-            #final.append(f'{key},{majority}')
+            final.append(f'{key},{majority}')
     print(count)
-    #with open('submission-ensemble.csv', 'w') as f:
-    #    f.writelines('\n'.join(final))
+    with open('submission-ensemble.csv', 'w') as f:
+        f.writelines('\n'.join(final))
 
 def main():
     answers = read()
