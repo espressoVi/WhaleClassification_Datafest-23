@@ -26,7 +26,7 @@ class resBlock(nn.Module):
         _in_channels = 2**((index-1)//4)
         _out_channels = 2**((index)//4)
         _stride = 1 if (index % downsample_rate != 0) else stride_factor
-        _kernel_size = 71
+        _kernel_size = 51
         _padding = _kernel_size//2
         self.bn1 = bnRelu(_in_channels)
         self.bn2 = bnRelu(_out_channels, _dropout)
@@ -50,13 +50,13 @@ class resTop(nn.Module):
         super().__init__()
         self.index = 0
         _in_channels = 1
-        _kernel_size = 51
+        _kernel_size = 31
         self.conv_start = nn.Conv1d(_in_channels, _in_channels, _kernel_size, stride = 1, padding = _kernel_size//2)
         self.bn1 = bnRelu(_in_channels)
         self.conv1 = nn.Conv1d(_in_channels, _in_channels, _kernel_size, stride = 2, padding = _kernel_size//2,)
         self.bn2 = bnRelu(_in_channels, 0.2)
-        self.conv2 = nn.Conv1d(_in_channels, _in_channels, _kernel_size, stride = 2, padding = _kernel_size//2,)
-        self.maxPool = nn.MaxPool1d(_kernel_size, stride=4, padding = _kernel_size//2)
+        self.conv2 = nn.Conv1d(_in_channels, _in_channels, _kernel_size, stride = 1, padding = _kernel_size//2,)
+        self.maxPool = nn.MaxPool1d(_kernel_size, stride=2, padding = _kernel_size//2)
     def forward(self, layer):
         layer = self.conv_start(layer)
         layer = self.bn1(layer)
