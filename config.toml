@@ -11,14 +11,14 @@ OUTPUT_FILE = 'submission.csv'
 
 [constants]
 SAMPLE_RATE = 2000
-RESAMPLE_RATE = 1000
-LOW_PASS=750
-HIGH_PASS=10
-MAX_SAMPLE_NUM=49152
-BATCH_SIZE = 14
-CLASS_NUM = 2
-lr = 1e-3
-epochs = 50
+RESAMPLE_RATE = 512
+LOW_PASS=95
+HIGH_PASS=65
+Q_FACTOR = 4
+MAX_SAMPLE_NUM = 16384
+BATCH_SIZE = 64
+lr = 1e-2
+epochs = 200
 
 [dataset]
 	[dataset.train]

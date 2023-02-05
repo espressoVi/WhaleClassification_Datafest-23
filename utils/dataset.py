@@ -22,9 +22,11 @@ class Dataset:
         assert self.mode in self.directories.keys()
         self.directory = files[self.directories[self.mode]]
         self.batch_size = constants['BATCH_SIZE']
-        self.sample_rate = constants['SAMPLE_RATE']
-        self.resample = T.Resample(self.sample_rate, constants['RESAMPLE_RATE'])
+        self.old_sample_rate = constants['SAMPLE_RATE']
+        self.sample_rate = constants['RESAMPLE_RATE']
+        self.resample = T.Resample(self.old_sample_rate, self.sample_rate)
         self.sample_num = constants['MAX_SAMPLE_NUM']
+        self.Q_factor = constants['Q_FACTOR'] 
         self._load()
 
     def _get_single_recording(self, filename):
@@ -32,13 +34,13 @@ class Dataset:
             _rec,_samp_rate = torchaudio.load(filename)
         except:
             raise ValueError(f"Couldn't open file {filename}")
-        assert _samp_rate == self.sample_rate
+        assert _samp_rate == self.old_sample_rate
         return self._preprocess(_rec)
 
     def _preprocess(self, waveform):
-        waveform = F.highpass_biquad(waveform, sample_rate = self.sample_rate, cutoff_freq = constants['HIGH_PASS'])
-        waveform = F.lowpass_biquad(waveform, sample_rate = self.sample_rate, cutoff_freq = constants['LOW_PASS'])
         waveform = self.resample(waveform)
+        waveform = F.highpass_biquad(waveform, sample_rate = self.sample_rate, cutoff_freq = constants['HIGH_PASS'], Q = self.Q_factor)
+        waveform = F.lowpass_biquad(waveform, sample_rate = self.sample_rate, cutoff_freq = constants['LOW_PASS'], Q = self.Q_factor)
         if waveform.shape[1] > self.sample_num:
             waveform = waveform[:,:self.sample_num]
         else:
@@ -77,4 +79,4 @@ class Dataset:
         return [os.path.join(self.directory, f) for f in os.listdir(self.directory)]
     @staticmethod
     def _get_label(filename):
-        return int(filename.split("/")[-1].split('_')[0])
+        return 1-int(filename.split("/")[-1].split('_')[0])
