@@ -2,14 +2,7 @@
 
 Implementing a 1D ResNet like architecture for whale sound classification.
 Validation accuracy - 99%
-
-## DONE:
-* Pre-processing.
-* Data loading, etc
-* Writing model, training loop, etc
-* Test model.
-* Write submission code.
-* Finetune model.
+Test F1 - 0.985
 
 ## USAGE:
 * Put training data in folder ./data/train and test data in folder ./data/test
@@ -26,5 +19,18 @@ Validation accuracy - 99%
 	```python main.py```
 
 ## FILES:
-* main.py
+* main.py > calls everything to train and write predictions
+* train_test.py > Contains training, evaluation, etc routines
+* dataset.py > Loads files and does the preprocessing.
+* models/modelBlocks.py > Contains the pieces that make the model.
+* models/models.py > Contains the 1D deep CNN model.
+* final-model > Contains the weights for our best model.
+* data > Directory with data
 
+## DONE:
+* Pre-processing.
+* Data loading, etc
+* Writing model, training loop, etc
+* Test model.
+* Write submission code.
+* Finetune model.
