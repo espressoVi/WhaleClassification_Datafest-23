@@ -18,7 +18,7 @@ Q_FACTOR = 4
 MAX_SAMPLE_NUM = 16384
 BATCH_SIZE = 64
 lr = 1e-2
-epochs = 60
+epochs = 50
 
 [dataset]
 	[dataset.train]
