@@ -19,8 +19,9 @@ Test F1 - 0.985
 	```python main.py```
 
 ## FILES:
-* main.py > calls everything to train and write predictions
-* train_test.py > Contains training, evaluation, etc routines
+* main.py > calls everything to train and write predictions.
+* config.toml > Toml file containing constants and other hyperparameter values.
+* train_test.py > Contains training, evaluation, etc routines.
 * dataset.py > Loads files and does the preprocessing.
 * models/modelBlocks.py > Contains the pieces that make the model.
 * models/models.py > Contains the 1D deep CNN model.

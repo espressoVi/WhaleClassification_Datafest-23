@@ -2,7 +2,7 @@ import toml
 import os
 import numpy as np
 import torch
-from utils.dataset import Dataset
+from dataset import Dataset
 from models.model import classifier
 from train_test import train
 from torchsummary import summary
