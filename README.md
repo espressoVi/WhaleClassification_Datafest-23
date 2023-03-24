@@ -1,4 +1,5 @@
-# Team UG&Sons submission for DataFest2023
+# Team UG&Sons submission for DataFest2023 - Whale Classification challenge
+# 1st Runner-up.
 
 Implementing a 1D ResNet like architecture for whale sound classification.
 Validation accuracy - 99%
